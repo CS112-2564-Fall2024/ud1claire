@@ -35,7 +35,7 @@ public class RC4 extends Cipher {
         byte[] S = getS();
 
         for(int i = 0; i < text.length; i++) {
-//            Add 1 to a and make it unsigned by masking
+//            Add 1 to a and make it unsigned by masking it.
             a = (a + 1) & 0xFF;
             b = (b + (S[a] & 0xFF)) & 0xFF;
             Util.swap(S, a, b);
@@ -48,7 +48,7 @@ public class RC4 extends Cipher {
         return ciphertext;
     }
 
-//    Encryption and decryption are the same
+//    Encryption and decryption are the same data transformations 
     protected byte[] decrypt() {
         return this.encrypt();
     }
