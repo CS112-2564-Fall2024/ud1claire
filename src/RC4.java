@@ -14,7 +14,7 @@ public class RC4 extends Cipher {
 
     public void keyScheduler() {
         for(int i = 0; i < 256; i++) {
-//            Initialize array 0 through 256
+//            Initialize array 0 through 255
             S[i] = (byte) i;
         }
 
