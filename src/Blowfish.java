@@ -1,7 +1,8 @@
-public class DES extends Cipher{
-    public DES(String plaintext, String key) throws NonASCIIException {
+public class Blowfish extends Cipher{
+    public Blowfish(String plaintext, String key) throws NonASCIIException {
         super(plaintext, key);
     }
+
 
     @Override
     protected byte[] encrypt() {
