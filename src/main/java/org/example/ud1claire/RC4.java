@@ -30,7 +30,7 @@ public class RC4 extends Cipher {
         }
     }
 
-    protected byte[] encrypt() {
+    private byte[] process() {
         int a = 0,  b = 0;
         int keystream;
         byte[] text = getPlaintext();
@@ -51,8 +51,14 @@ public class RC4 extends Cipher {
         return ciphertext;
     }
 
+    protected byte[] encrypt() {
+        keyScheduler();
+        return process();
+    }
+
     //    Encryption and decryption are the same data transformations
     protected byte[] decrypt() {
-        return this.encrypt();
+        keyScheduler();
+        return process();
     }
 }

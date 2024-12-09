@@ -73,7 +73,7 @@ abstract class Cipher {
         public static String bToS(byte[] s) {
             String hexString = "";
             for(byte b: s) {
-                hexString += String.format("%02x", b);
+                hexString += Integer.toHexString(0xff&b);
             }
 
             return hexString;

@@ -30,12 +30,10 @@ public class Controller {
     private RC5 rc5;
 
     private boolean rc4selected = true;
+    private boolean encryptUsed = false;
 
     @FXML
     public void initialize() throws NonASCIIException {
-
-//        System.out.println(Cipher.Util.bToS("Attack at dawn".getBytes()));
-
         toggleGroup.selectToggle(rc4radio);
         input3.editableProperty().set(false);
         input3.setFocusTraversable(false);
@@ -76,8 +74,9 @@ public class Controller {
         if(isValid()) {
             byte[][] inputs = getInputs();
             rc4 = new RC4(inputs[0],inputs[1]);
-            System.out.println(new String(rc4.encrypt()));
-            String text = rc4selected ? new String(rc4.encrypt()) : rc5.encryptS();
+            String result = Cipher.Util.bToS(rc4.encrypt());
+
+            String text = rc4selected ? result : rc5.encryptS();
 
             input3.setText(text);
         }
@@ -86,14 +85,30 @@ public class Controller {
     private void handleDecrypt() throws NonASCIIException {
         if(isValid()) {
             byte[][] inputs = getInputs();
+            String text;
+            text = new RC4(Cipher.Util.hToS(input1.getText()),inputs[1]).decryptS();
+            System.out.println(text);
 
 //            if(rc4 == null) {
-                rc4 = new RC4(inputs[0], inputs[1]);
+//                System.out.println("Test 1");
+//                rc4 = new RC4(inputs[0], inputs[1]);
+//                text = Cipher.Util.bToS(rc4.encrypt());
+//                byte[] c = new RC4(rc4.encrypt(), inputs[1]).decrypt();
+//                System.out.println(Cipher.Util.bToS(c));
+////                45a01f645fc35b383552544b9bf5
+//            } else {
+//                System.out.println("Test 2");
+//                byte[] r = new RC4(rc4.getPlaintext(), inputs[1]).decrypt();
+//                byte[] ciphertext = new RC4(r, inputs[1]).decrypt();
+//                text = rc4selected ? Cipher.Util.bToS(ciphertext) + "\nPlaintext: " + new String(ciphertext): rc5.decryptS();
+//                System.out.println(text);
 //            }
+            RC4 r = new RC4(inputs[0], inputs[1]);
+            System.out.println(Arrays.toString(r.encrypt()));
 
-            System.out.println(new String(new RC4(rc4.encrypt(), inputs[1]).encrypt()));
-            System.out.println(new String(rc4.encrypt()));
-            String text = rc4selected ? new String(new RC4(rc4.encrypt(), inputs[1]).encrypt()): rc5.decryptS();
+            text = new RC4(inputs[0], inputs[1]).encryptS();
+            System.out.println(text);
+
             input3.setText(text);
         }
     }
