@@ -6,32 +6,23 @@ abstract class Cipher {
     protected byte[] plaintext;
     private byte[] key;
 
-    public Cipher(byte[] plaintext, byte[] key) {
-        setPlaintext(plaintext);
+    public Cipher(byte[] key) {
         setKey(key);
     }
 
-    protected abstract byte[] encrypt();
-    protected abstract byte[] decrypt();
+    protected abstract byte[] encrypt(byte[] plaintext);
+    protected abstract byte[] decrypt(byte[] ciphertext);
 
-    public void setPlaintext(byte[] plaintext) {
-        this.plaintext = plaintext;
-    }
 
     public void setKey(byte[] key) {
         this.key = key;
     }
 
-    public byte[] getPlaintext() {
-        return this.plaintext;
-    }
 
     public byte[] getKey() {
         return this.key;
     }
 
-    public String encryptS() {return Util.bToS(encrypt());}
-    public String decryptS() {return Util.bToS(decrypt());}
 
     public static class Util {
         public static byte[] generateKey(int length) {
@@ -79,15 +70,16 @@ abstract class Cipher {
             return hexString;
         }
 
-        public static byte[] hToS(String hex) {
-            byte[] result = new byte[hex.length()];
-            char[] arr = hex.toCharArray();
+        public static byte[] hToB(String hex) {
+            int length = hex.length();
+            byte[] bytes = new byte[length / 2];
 
-            for(int i = 0; i < hex.length(); i++) {
-                result[i] = (byte) arr[i];
+            for (int i = 0; i < length; i += 2) {
+                bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                        + Character.digit(hex.charAt(i + 1), 16));
             }
 
-            return result;
+            return bytes;
         }
 
         /**

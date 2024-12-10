@@ -1,17 +1,16 @@
 package org.example.ud1claire;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import org.example.ud1claire.NonASCIIException;
 
-import java.security.Key;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.EventListener;
+import java.awt.Desktop;
+import java.net.URI;
 
 public class Controller {
     @FXML
@@ -26,14 +25,17 @@ public class Controller {
     @FXML
     private Button copy, encrypt, decrypt;
 
-    private RC4 rc4;
+    @FXML
+    private MenuItem githubMenu, rc4Menu, rc5Menu;
+
+    //    private RC4 rc4;
     private RC5 rc5;
 
     private boolean rc4selected = true;
-    private boolean encryptUsed = false;
+
 
     @FXML
-    public void initialize() throws NonASCIIException {
+    public void initialize() throws KeySizeError {
         toggleGroup.selectToggle(rc4radio);
         input3.editableProperty().set(false);
         input3.setFocusTraversable(false);
@@ -43,71 +45,90 @@ public class Controller {
         encrypt.setOnAction(event -> {
             try {
                 handleEncrypt();
-            } catch (NonASCIIException e) {
+            } catch (KeySizeError e) {
             }
         });
 
         decrypt.setOnAction(event -> {
             try {
                 handleDecrypt();
-            } catch (NonASCIIException e) {
+            } catch (KeySizeError e) {
             }
         });
+
+        githubMenu.setOnAction(event -> {
+            try {
+                openUrl("https://github.com/CS112-2564-Fall2024/ud1claire");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        rc4Menu.setOnAction(event -> {
+            try {
+                openUrl("https://en.wikipedia.org/wiki/RC4#Key-scheduling_algorithm_(KSA)");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+        rc5Menu.setOnAction(event -> {
+            try {
+                openUrl("https://github.com/CS112-2564-Fall2024/ud1claire");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
     }
 
-    private boolean isValid() throws NonASCIIException {
-        if(!input1.getText().isEmpty() && !input2.getText().isEmpty()) {
+    private void openUrl(String url) throws URISyntaxException, IOException {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI(url));
+        }
+    }
+
+    private boolean isValid() throws KeySizeError {
+        if (!input1.getText().isEmpty() && !input2.getText().isEmpty()) {
 //            The ciphertext may not be ASCII but the key must be.
             if (!Cipher.Util.isStringAscii(input2.getText())) {
-                throw new NonASCIIException("Invalid text entered");
+                throw new KeySizeError("Invalid text entered");
             }
 
             return true;
-        } return false;
+        }
+        return false;
     }
 
     private byte[][] getInputs() {
-        return new byte[][]{input1.getText().getBytes(), input2.getText().getBytes()};
+        return new byte[][]{input2.getText().getBytes(StandardCharsets.US_ASCII), input1.getText().getBytes(StandardCharsets.US_ASCII)};
     }
 
-    private void handleEncrypt() throws NonASCIIException {
-        if(isValid()) {
+    private void handleEncrypt() throws KeySizeError {
+        if (isValid()) {
             byte[][] inputs = getInputs();
-            rc4 = new RC4(inputs[0],inputs[1]);
-            String result = Cipher.Util.bToS(rc4.encrypt());
+            RC4 rc4 = new RC4(inputs[0]);
+//            input3.setText();
+//            this.data = rc4.process(inputs[1]);
 
-            String text = rc4selected ? result : rc5.encryptS();
+            String text = rc4selected ? Cipher.Util.bToS(rc4.encrypt(inputs[1])) : Cipher.Util.bToS(rc5.encrypt(inputs[1]));
 
             input3.setText(text);
         }
     }
 
-    private void handleDecrypt() throws NonASCIIException {
-        if(isValid()) {
+    private void handleDecrypt() throws KeySizeError {
+        if (isValid()) {
             byte[][] inputs = getInputs();
-            String text;
-            text = new RC4(Cipher.Util.hToS(input1.getText()),inputs[1]).decryptS();
-            System.out.println(text);
+            RC4 rc4 = new RC4(inputs[0]);
 
-//            if(rc4 == null) {
-//                System.out.println("Test 1");
-//                rc4 = new RC4(inputs[0], inputs[1]);
-//                text = Cipher.Util.bToS(rc4.encrypt());
-//                byte[] c = new RC4(rc4.encrypt(), inputs[1]).decrypt();
-//                System.out.println(Cipher.Util.bToS(c));
-////                45a01f645fc35b383552544b9bf5
-//            } else {
-//                System.out.println("Test 2");
-//                byte[] r = new RC4(rc4.getPlaintext(), inputs[1]).decrypt();
-//                byte[] ciphertext = new RC4(r, inputs[1]).decrypt();
-//                text = rc4selected ? Cipher.Util.bToS(ciphertext) + "\nPlaintext: " + new String(ciphertext): rc5.decryptS();
-//                System.out.println(text);
-//            }
-            RC4 r = new RC4(inputs[0], inputs[1]);
-            System.out.println(Arrays.toString(r.encrypt()));
-
-            text = new RC4(inputs[0], inputs[1]).encryptS();
-            System.out.println(text);
+            byte[] data = rc4.decrypt(Cipher.Util.hToB(input1.getText()));
+            String text = rc4selected ? "Hex: " + Cipher.Util.bToS(data) +
+                    "\nPlaintext: " + new String(data) : Arrays.toString(rc5.decrypt(inputs[1]));
 
             input3.setText(text);
         }

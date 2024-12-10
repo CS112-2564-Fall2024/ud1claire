@@ -10,8 +10,8 @@ public class RC5 extends Cipher{
 
     private int[] S = new int[t];
 
-    public RC5(byte[] plaintext, byte[] key) {
-        super(plaintext, key);
+    public RC5(byte[] plaintext) {
+        super(plaintext);
     }
 
     private void keyScheduler() {
@@ -53,7 +53,7 @@ public class RC5 extends Cipher{
     }
 
     @Override
-    protected byte[] encrypt() {
+    protected byte[] encrypt(byte[] plaintext) {
         int A, B;
 //        A = A + S;
 
@@ -61,7 +61,7 @@ public class RC5 extends Cipher{
     }
 
     @Override
-    protected byte[] decrypt() {
+    protected byte[] decrypt(byte[] ciphertext) {
         return new byte[0];
     }
 }

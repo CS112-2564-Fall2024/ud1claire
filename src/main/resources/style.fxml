@@ -71,7 +71,9 @@
                       </Menu>
                       <Menu mnemonicParsing="false" text="About">
                           <items>
-                              <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                              <MenuItem fx:id="githubMenu" mnemonicParsing="false" text="GitHub Link" />
+                        <MenuItem fx:id="rc4Menu" mnemonicParsing="false" text="RC4" />
+                        <MenuItem fx:id="rc5Menu" mnemonicParsing="false" text="RC5" />
                           </items>
                       </Menu>
                   </menus>
@@ -83,15 +85,15 @@
                 </RadioButton>
                 <RadioButton fx:id="rc4radio" layoutX="82.0" layoutY="47.0" mnemonicParsing="false" text="RC4 (Stream Cipher)" toggleGroup="$toggleGroup" />
                 <Button fx:id="encrypt" layoutX="146.0" layoutY="196.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Encrypt" />
-                <TextField fx:id="input2" layoutX="80.0" layoutY="145.0" prefHeight="35.0" prefWidth="340.0" promptText="Key Optional For RC4" />
+                <TextField fx:id="input2" layoutX="80.0" layoutY="145.0" prefHeight="35.0" prefWidth="340.0" />
                 <TextField fx:id="input1" layoutX="80.0" layoutY="93.0" prefHeight="35.0" prefWidth="340.0" />
-                <TextArea fx:id="input3" layoutX="80.0" layoutY="263.0" prefHeight="98.0" prefWidth="340.0" promptText="Inverse transformation of first input." />
-                <Label alignment="CENTER" layoutX="140.0" layoutY="240.0" prefHeight="17.0" prefWidth="220.0" text="Plaintext/Ciphertext" />
+                <TextArea fx:id="input3" layoutX="80.0" layoutY="270.0" prefHeight="98.0" prefWidth="340.0" promptText="Inverse transformation of first input." />
+                <Label alignment="CENTER" layoutX="140.0" layoutY="245.0" prefHeight="17.0" prefWidth="220.0" text="Inverse Plaintext/Ciphertext" />
                 <Label alignment="CENTER" layoutX="140.0" layoutY="76.0" prefHeight="17.0" prefWidth="220.0" text="Plaintext/Ciphertext:" />
                 <Label alignment="CENTER" layoutX="140.0" layoutY="128.0" prefHeight="17.0" prefWidth="220.0" text="Key:" />
                 <Button fx:id="decrypt" layoutX="275.0" layoutY="196.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Decrypt" />
                 <Label alignment="CENTER" layoutX="140.0" layoutY="30.0" prefHeight="17.0" prefWidth="220.0" text="Ciphers:" />
-                <Button fx:id="copy" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="396.0" layoutY="263.0" maxHeight="16.0" maxWidth="16.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#handleCopy" prefHeight="16.0" prefWidth="16.0">
+                <Button fx:id="copy" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="396.0" layoutY="270.0" maxHeight="16.0" maxWidth="16.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#handleCopy" prefHeight="16.0" prefWidth="16.0">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>

@@ -1,64 +1,68 @@
 package org.example.ud1claire;
 
-import org.example.ud1claire.NonASCIIException;
+public class RC4 extends Cipher{
+    private byte[] sbox = new byte[256];
+    private int a = 0;
+    private int b = 0;
 
-
-public class RC4 extends Cipher {
-    private byte[] S = new byte[256];
-
-    public RC4(byte[] plaintext, byte[] key) {
-        super(plaintext, key);
+    /**
+     * Initialize the cipher to encrypt or decrypt data.
+     * @param key The secret key to use when encrypting data.
+     * @see <a href="https://en.wikipedia.org/wiki/RC4#Key-scheduling_algorithm_(KSA)">RC4 Key Scheduling Algorithm</a>
+     *
+     */
+    public RC4(byte[] key) throws KeySizeError{
+        super(key);
+        if(key.length < 1 || key.length > 256) {
+            throw new KeySizeError("Key must be between 1 and 256 bits long");
+        }
+//        this.key = key;
         keyScheduler();
     }
 
-    public byte[] getS() {
-        return this.S;
-    }
-
-    public void keyScheduler() {
-        for(int i = 0; i < 256; i++) {
-//            Initialize array 0 through 255
-            S[i] = (byte) i;
+//    Key scheduler
+    private void keyScheduler() {
+//        Initialize the S-Box with values between 0 and 255
+        for (int i = 0; i < 256; i++) {
+            sbox[i] = (byte) i;
         }
 
         int j = 0;
-        for(int h = 0; h < 256; h++) {
-//            Everything is masked just to make sure it is all unsigned.
-            j = (j + (getS()[h] & 0xFF) + (getKey()[h % getKey().length] & 0xFF)) & 0xFF;
-//            Swap current iteration with j in the scheduled key.
-            Util.swap(getS(), h, j);
+
+//        Shuffle the S-box using the key
+        for (int i = 0; i < 256; i++) {
+//            I mask it with 0xff to ensure that it is unsigned per the cipher.
+            j = (j + sbox[i] + getKey()[i % getKey().length]) & 0xff;
+//            Swap sbox[i] and sbox[j]
+            Cipher.Util.swap(sbox, i, j);
         }
     }
 
-    private byte[] process() {
-        int a = 0,  b = 0;
-        int keystream;
-        byte[] text = getPlaintext();
-        byte[] ciphertext = new byte[text.length];
-        byte[] S = getS();
 
-        for(int i = 0; i < text.length; i++) {
-//            Add 1 to a and make it unsigned by masking it.
-            a = (a + 1) & 0xFF;
-            b = (b + (S[a] & 0xFF)) & 0xFF;
-            Util.swap(S, a, b);
-//            Get the keystream used to XOR the plaintext
-            keystream = (S[(S[a] + S[b]) & 0xFF]) & 0xFF;
-//            XOR (exclusive or) on plaintext with keystream to make ciphertext of current byte.
-            ciphertext[i] = (byte) ((text[i] & 0xFF) ^ keystream);
+    public byte[] process(byte[] input) {
+        byte[] result = new byte[input.length];
+
+        for (int i = 0; i < input.length; i++) {
+            a = (a + 1) & 0xff;
+            b = (b + sbox[a]) & 0xff;
+
+//            Swap sbox[a] and sbox[b]
+            Cipher.Util.swap(sbox, a, b);
+
+            // Generate the keystream byte and XOR it with the input byte
+//            Generate the byte to be XORed with the current byte of the stream.
+            byte keystream = sbox[(sbox[a] + sbox[b]) & 0xff];
+            result[i] = (byte) (input[i] ^ keystream);
         }
 
-        return ciphertext;
+        return result;
     }
 
-    protected byte[] encrypt() {
-        keyScheduler();
-        return process();
+    public byte[] encrypt(byte[] plaintext) {
+        return process(plaintext);
     }
 
-    //    Encryption and decryption are the same data transformations
-    protected byte[] decrypt() {
-        keyScheduler();
-        return process();
+    public byte[] decrypt(byte[] ciphertext) {
+        return process(ciphertext);
     }
 }
