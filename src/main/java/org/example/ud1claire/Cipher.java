@@ -1,14 +1,10 @@
 package org.example.ud1claire;
 
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.HexFormat;
 
 abstract class Cipher {
-    protected byte[] plaintext;
     private byte[] key;
 
     public Cipher(byte[] key) {
@@ -32,26 +28,8 @@ abstract class Cipher {
     public static class Util {
         public static SecretKey generateKey(int length) throws NoSuchAlgorithmException {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(length); // Use 256 bits for strong encryption (ensure JCE policy is installed for Java 8)
+            keyGenerator.init(length);
             return keyGenerator.generateKey();
-        }
-
-        public static boolean isStringAscii(String string){
-            // Check if the plaintext string contains only printable ASCII letters so that it can use the byte type.
-
-            for (char c : string.toCharArray()) {
-                if (c > 127 || c < 32) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static void swap(int[] arr, int a, int b) {
-            int buff = arr[a];
-            arr[a] = arr[b];
-            arr[b] = buff;
         }
 
         public static void swap(byte[] arr, int a, int b) {
@@ -74,6 +52,8 @@ abstract class Cipher {
             return hexString;
         }
 
+        // I did not write this method, I found it on StackOverflow at https://stackoverflow.com/a/140861/24756368.
+//        The alternate method of HexFormat.of().parseHex(hex) does not work well enough.
         public static byte[] hToB(String hex) {
             int len = hex.length();
             byte[] data = new byte[len / 2];
@@ -87,9 +67,6 @@ abstract class Cipher {
 
         /**
          * Bitwise circular shift of a number, i, by n places.
-         * @param i
-         * @param n
-         * @return
          */
         public static int leftshift(int i, int n) {
             return (i << n) | (i >>> (32-n));

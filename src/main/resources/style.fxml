@@ -37,14 +37,13 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" prefHeight="430.0" prefWidth="500.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ud1claire.Controller">
     <children>
@@ -63,27 +62,19 @@
                           <items>
                               <MenuItem fx:id="githubMenu" mnemonicParsing="false" text="GitHub Link" />
                         <MenuItem fx:id="rc4Menu" mnemonicParsing="false" text="RC4" />
-                        <MenuItem fx:id="aesMenu" mnemonicParsing="false" text="AES" />
                           </items>
                       </Menu>
                   </menus>
               </MenuBar>
-                <RadioButton fx:id="aesRadio" layoutX="300.0" layoutY="66.0" mnemonicParsing="false" text="AES (Block Cipher)">
-                    <toggleGroup>
-                        <ToggleGroup fx:id="toggleGroup" />
-                    </toggleGroup>
-                </RadioButton>
-                <RadioButton fx:id="rc4Radio" layoutX="81.0" layoutY="66.0" mnemonicParsing="false" text="RC4 (Stream Cipher)" toggleGroup="$toggleGroup" />
-                <Button fx:id="encrypt" layoutX="81.0" layoutY="235.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Encrypt" />
-                <TextField fx:id="input2" layoutX="80.0" layoutY="179.0" prefHeight="35.0" prefWidth="340.0" />
-                <TextField fx:id="input1" layoutX="80.0" layoutY="111.0" prefHeight="35.0" prefWidth="340.0" />
-                <TextArea fx:id="input3" layoutX="80.0" layoutY="302.0" prefHeight="98.0" prefWidth="340.0" promptText="Inverse transformation of first input." />
-                <Label alignment="CENTER" layoutX="140.0" layoutY="284.0" prefHeight="17.0" prefWidth="220.0" text="Inverse Plaintext/Ciphertext" />
-                <Label alignment="CENTER" layoutX="140.0" layoutY="93.0" prefHeight="17.0" prefWidth="220.0" text="Plaintext/Ciphertext:" />
-                <Label alignment="CENTER" layoutX="140.0" layoutY="161.0" prefHeight="17.0" prefWidth="220.0" text="Key:" />
-                <Button fx:id="decrypt" layoutX="213.0" layoutY="235.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Decrypt" />
-                <Label alignment="CENTER" layoutX="139.0" layoutY="49.0" prefHeight="17.0" prefWidth="220.0" text="Ciphers:" />
-                <Button fx:id="copy" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="396.0" layoutY="302.0" maxHeight="16.0" maxWidth="16.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#handleCopy" prefHeight="16.0" prefWidth="16.0">
+                <Button fx:id="encrypt" layoutX="81.0" layoutY="218.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Encrypt" />
+                <TextField fx:id="input2" layoutX="80.0" layoutY="162.0" prefHeight="35.0" prefWidth="340.0" />
+                <TextField fx:id="input1" layoutX="80.0" layoutY="94.0" prefHeight="35.0" prefWidth="340.0" />
+                <TextArea fx:id="input3" layoutX="80.0" layoutY="285.0" prefHeight="98.0" prefWidth="340.0" promptText="Inverse transformation of first input." />
+                <Label alignment="CENTER" layoutX="140.0" layoutY="267.0" prefHeight="17.0" prefWidth="220.0" text="Inverse Plaintext/Ciphertext" />
+                <Label alignment="CENTER" layoutX="140.0" layoutY="76.0" prefHeight="17.0" prefWidth="220.0" text="Plaintext/Ciphertext:" />
+                <Label alignment="CENTER" layoutX="140.0" layoutY="144.0" prefHeight="17.0" prefWidth="220.0" text="Key:" />
+                <Button fx:id="decrypt" layoutX="213.0" layoutY="218.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" text="Decrypt" />
+                <Button fx:id="copy" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="394.0" layoutY="285.0" maxHeight="16.0" maxWidth="16.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#handleCopy" prefHeight="16.0" prefWidth="16.0">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -92,7 +83,12 @@
                         </ImageView>
                     </graphic>
                 </Button>
-            <Button fx:id="clear" layoutX="344.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleClear" prefHeight="35.0" prefWidth="74.0" text="Clear" />
+            <Button fx:id="clear" layoutX="344.0" layoutY="218.0" mnemonicParsing="false" onAction="#handleClear" prefHeight="35.0" prefWidth="74.0" text="Clear" />
+            <Label layoutX="197.0" layoutY="26.0" text="RC4 Encrypter" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </children>

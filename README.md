@@ -2,8 +2,18 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=16374981&assignment_repo_type=AssignmentRepo)
 
 # Project UD1
-For this project, I am creating a UI to encrypt and decrypt data. 
-There will be two ciphers that I may implement and both are almost certainly insecure. The point is not for the ciphers implemented to be very secure, I just like learning about cryptography. 
+My main goal in this project was to make a UI that could encrypt and decrypt
+things using various different ciphers. I initially aimed for 2 ciphers, but finding
+a block cipher that wasn't excessively technical was challenging. I do not have a
+strong background in linear algebra or cryptography so anything advanced is
+out of question. I settled on the RC4 cipher eventually. I was aiming to also
+put the AES cipher in using the javax.crypto library, but even that was a headache.
+More notes about why it didn't work are in the AES.java file. Overall, my user experience 
+to allow users to encrypt and decrypt and import/export that to files 
+was accomplished. 
+
 
 ## Works Cited
-Aumasson, Jean-Philippe. (2017). *Serious cryptography.* No Starch Press. 
+* https://en.wikipedia.org/wiki/RC4
+* https://stackoverflow.com/a/140861/24756368
+* Both icons were made by me in Inkscape, so I don't need to cite them.

@@ -3,9 +3,14 @@ package org.example.ud1claire;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
 
+/*
+* This one does not work either. I'm not entirely sure what went wrong but the errors I was getting primarily revolved
+* around the key size being wrong during decryption. Somehow the key size was between 28-32 bytes, but even when it was
+* exactly 32 bytes, it didn't work. It should have been exactly 16 bytes because the key size I tried to use was 128
+* bits (16 bytes). It works perfectly fine for encryption. I also had some trouble figuring out how to deal with
+* passing the key to the UI since it's randomly generated opposed to the RC4 key being user made.
+*/
 
 public class AES extends org.example.ud1claire.Cipher{
 
