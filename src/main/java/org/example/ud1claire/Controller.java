@@ -1,5 +1,6 @@
 package org.example.ud1claire;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.awt.Desktop;
 import java.net.URI;
+import java.security.Key;
 
 public class Controller {
     @FXML
@@ -168,6 +170,14 @@ public class Controller {
                     e.printStackTrace();
                 }
             }
+        }
+
+        if(event.isControlDown() && code == KeyCode.C) {
+            handleClear();
+        }
+        if(event.isControlDown() && code == KeyCode.Q) {
+            Platform.exit();
+            System.exit(0);
         }
     }
 
