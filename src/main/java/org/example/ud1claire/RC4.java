@@ -14,7 +14,7 @@ public class RC4 extends Cipher{
     public RC4(byte[] key) throws KeySizeError{
         super(key);
         if(key.length < 1 || key.length > 256) {
-            throw new KeySizeError("Key must be between 1 and 256 bits long");
+            throw new KeySizeError("Key must be between 1 and 256 bytes long");
         }
 //        this.key = key;
         keyScheduler();
@@ -37,7 +37,6 @@ public class RC4 extends Cipher{
             Cipher.Util.swap(sbox, i, j);
         }
     }
-
 
     public byte[] process(byte[] input) {
         byte[] result = new byte[input.length];

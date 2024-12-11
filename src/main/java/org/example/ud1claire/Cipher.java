@@ -1,6 +1,11 @@
 package org.example.ud1claire;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.HexFormat;
 
 abstract class Cipher {
     protected byte[] plaintext;
@@ -10,8 +15,8 @@ abstract class Cipher {
         setKey(key);
     }
 
-    protected abstract byte[] encrypt(byte[] plaintext);
-    protected abstract byte[] decrypt(byte[] ciphertext);
+    protected abstract byte[] encrypt(byte[] plaintext) throws Exception;
+    protected abstract byte[] decrypt(byte[] ciphertext) throws Exception;
 
 
     public void setKey(byte[] key) {
@@ -25,11 +30,10 @@ abstract class Cipher {
 
 
     public static class Util {
-        public static byte[] generateKey(int length) {
-            byte[] key = new byte[length];
-//        SecureRandomParameters parameters;
-            new SecureRandom().nextBytes(key);
-            return key;
+        public static SecretKey generateKey(int length) throws NoSuchAlgorithmException {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(length); // Use 256 bits for strong encryption (ensure JCE policy is installed for Java 8)
+            return keyGenerator.generateKey();
         }
 
         public static boolean isStringAscii(String string){
@@ -71,15 +75,14 @@ abstract class Cipher {
         }
 
         public static byte[] hToB(String hex) {
-            int length = hex.length();
-            byte[] bytes = new byte[length / 2];
-
-            for (int i = 0; i < length; i += 2) {
-                bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                        + Character.digit(hex.charAt(i + 1), 16));
+            int len = hex.length();
+            byte[] data = new byte[len / 2];
+            for (int i = 0; i < len; i += 2) {
+                data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                        + Character.digit(hex.charAt(i+1), 16));
             }
-
-            return bytes;
+            return data;
+//            return HexFormat.of().parseHex(hex);
         }
 
         /**

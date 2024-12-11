@@ -20,11 +20,16 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/appicon.png")));
         stage.setResizable(false);
         stage.show();
+
+        Controller controller = loader.getController();
+        controller.setStage(stage);
     }
 
     public static void main(String[] args) throws KeySizeError {
         /*
-        TODO fix menu bar.
+        TODO Get export working.
+        TODO Add AES
+
          */
 
         launch();
