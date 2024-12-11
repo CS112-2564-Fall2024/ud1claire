@@ -3,6 +3,7 @@ package org.example.ud1claire;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 
 abstract class Cipher {
     private byte[] key;
@@ -44,12 +45,13 @@ abstract class Cipher {
          * @return Human-readable hexadecimal string.
          */
         public static String bToS(byte[] s) {
-            String hexString = "";
-            for(byte b: s) {
-                hexString += Integer.toHexString(0xff&b);
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : s) {
+                hexString.append(String.format("%02x", b));
             }
 
-            return hexString;
+            return hexString.toString();
         }
 
         // I did not write this method, I found it on StackOverflow at https://stackoverflow.com/a/140861/24756368.
@@ -57,12 +59,12 @@ abstract class Cipher {
         public static byte[] hToB(String hex) {
             int len = hex.length();
             byte[] data = new byte[len / 2];
+
             for (int i = 0; i < len; i += 2) {
-                data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                        + Character.digit(hex.charAt(i+1), 16));
+                    data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                            + Character.digit(hex.charAt(i + 1), 16));
             }
             return data;
-//            return HexFormat.of().parseHex(hex);
         }
 
         /**
